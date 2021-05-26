@@ -1,7 +1,7 @@
 ARG UBUNTU_VERSION=18.04
 
 ARG ARCH=
-ARG CUDA=10.2
+ARG CUDA=10.0
 FROM nvidia/cuda${ARCH:+-$ARCH}:${CUDA}-base-ubuntu${UBUNTU_VERSION} as base
 # ARCH and CUDA are specified again because the FROM directive resets ARGs
 # (but their default value is retained if set previously)
@@ -67,10 +67,10 @@ RUN python3 -m pip install --no-cache-dir jupyter matplotlib
 RUN python3 -m pip install --no-cache-dir jupyter_http_over_ws ipykernel==5.1.1 nbformat==4.4.0
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
-RUN mkdir -p /home/jovyan/tensorflow-tutorials && chmod -R a+rwx /home/jovyan/
+RUN mkdir -p /tf/tensorflow-tutorials && chmod -R a+rwx /tf/
 RUN mkdir /.local && chmod a+rwx /.local
 RUN apt-get update && apt-get install -y --no-install-recommends wget git
-WORKDIR /home/jovyan/tensorflow-tutorials
+WORKDIR /tf/tensorflow-tutorials
 RUN wget https://raw.githubusercontent.com/tensorflow/docs/master/site/en/tutorials/keras/classification.ipynb
 RUN wget https://raw.githubusercontent.com/tensorflow/docs/master/site/en/tutorials/keras/overfit_and_underfit.ipynb
 RUN wget https://raw.githubusercontent.com/tensorflow/docs/master/site/en/tutorials/keras/regression.ipynb
@@ -79,11 +79,12 @@ RUN wget https://raw.githubusercontent.com/tensorflow/docs/master/site/en/tutori
 RUN wget https://raw.githubusercontent.com/tensorflow/docs/master/site/en/tutorials/keras/text_classification_with_hub.ipynb
 COPY readme-for-jupyter.md README.md
 RUN apt-get autoremove -y && apt-get remove -y wget
-WORKDIR /home/jovyan
+WORKDIR /tf
 EXPOSE 8888
+
 
 RUN python3 -m ipykernel.kernelspec
 
 ENV NB_PREFIX /
 
-CMD ["bash", "-c", "source /etc/bash.bashrc && jupyter notebook --notebook-dir=/home/jovyan --ip 0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}"]
+CMD ["bash", "-c", "source /etc/bash.bashrc && jupyter notebook --notebook-dir=/tf --ip 0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.token='' --NotebookApp.password='' --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}"]
