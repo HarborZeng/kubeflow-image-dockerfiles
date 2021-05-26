@@ -22,17 +22,15 @@
 ARG UBUNTU_VERSION=18.04
 
 ARG ARCH=
-ARG CUDA=11.2
+ARG CUDA=10.0
 FROM nvidia/cuda${ARCH:+-$ARCH}:${CUDA}.1-base-ubuntu${UBUNTU_VERSION} as base
 # ARCH and CUDA are specified again because the FROM directive resets ARGs
 # (but their default value is retained if set previously)
 ARG ARCH
 ARG CUDA
-ARG CUDNN=8.1.0.77-1
-ARG CUDNN_MAJOR_VERSION=8
+ARG CUDNN=7.6.5.32-1
+ARG CUDNN_MAJOR_VERSION=7
 ARG LIB_DIR_PREFIX=x86_64
-ARG LIBNVINFER=7.2.2-1
-ARG LIBNVINFER_MAJOR_VERSION=7
 
 # Needed for string substitution
 SHELL ["/bin/bash", "-c"]
@@ -47,7 +45,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libcusolver-${CUDA/./-} \
         libcusparse-${CUDA/./-} \
         curl \
-        libcudnn8=${CUDNN}+cuda${CUDA} \
+        libcudnn7=${CUDNN}+cuda${CUDA} \
         libfreetype6-dev \
         libhdf5-serial-dev \
         libzmq3-dev \
