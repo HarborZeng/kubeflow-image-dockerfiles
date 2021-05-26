@@ -14,7 +14,7 @@ SHELL ["/bin/bash", "-c"]
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
         cuda-command-line-tools-${CUDA/./-} \
-        libcublas-10 \
+        libcublas10 \
         cuda-nvrtc-${CUDA/./-} \
         curl \
         libcudnn7 \
