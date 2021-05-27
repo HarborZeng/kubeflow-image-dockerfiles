@@ -40,7 +40,7 @@ RUN jupyter serverextension enable --py jupyter_http_over_ws
 RUN mkdir -p /home/jovyan && chmod -R a+rwx /home/jovyan
 RUN mkdir /.local && chmod a+rwx /.local
 RUN apt-get update && apt-get install -y --no-install-recommends wget git
-RUN apt-get autoremove -y && apt-get remove -y wget
+RUN apt-get autoremove -y
 
 WORKDIR /home/jovyan
 EXPOSE 8888
