@@ -1,6 +1,5 @@
-FROM nvidia/cuda:9.0-cudnn7-runtime-ubuntu16.04 as base
+FROM nvidia/cuda:10.2-cudnn7-runtime-ubuntu18.04 as base
 
-# Pick up some TF dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
         curl \
@@ -18,19 +17,9 @@ RUN python3 -m pip --no-cache-dir install --upgrade \
     "pip<20.3" \
     setuptools
 
-# Some TF tools expect a "python" binary
 RUN ln -s $(which python3) /usr/local/bin/python
 
-# Options:
-#   tensorflow
-#   tensorflow-gpu
-#   tf-nightly
-#   tf-nightly-gpu
-# Set --build-arg TF_PACKAGE_VERSION=1.11.0rc0 to install a specific version.
-# Installs the latest version by default.
-ARG TF_PACKAGE=tensorflow-gpu
-ARG TF_PACKAGE_VERSION=1.9.0
-RUN python3 -m pip install --no-cache-dir ${TF_PACKAGE}${TF_PACKAGE_VERSION:+==${TF_PACKAGE_VERSION}}
+RUN python3 -m pip install --no-cache-dir torch==1.6.0
 
 RUN python3 -m pip install --no-cache-dir jupyter matplotlib
 # Pin ipykernel and nbformat; see https://github.com/ipython/ipykernel/issues/422
