@@ -1,4 +1,4 @@
-FROM nvidia/11.2.2-cudnn8-runtime-ubuntu20.04 as base
+FROM nvidia/cuda:11.2.2-cudnn8-runtime-ubuntu20.04 as base
 
 # Pick up some TF dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
