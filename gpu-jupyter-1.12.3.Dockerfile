@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.0-cudnn7-runtime-ubuntu18.04 as base
+FROM nvidia/cuda:9.0-cudnn7-runtime-ubuntu16.04 as base
 
 # Pick up some TF dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
