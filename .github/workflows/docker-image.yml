@@ -28,6 +28,6 @@ jobs:
         # Dockerhub username
         dockerhub-username: harborzeng
         # Dockerhub password
-        dockerhub-password: ${{ secret.dockerhub_password }}
+        dockerhub-password: ${{ secrets.dockerhub_password }}
         # Github personal access token to be used to call the deploy-action-repo
-        github-pat: ${{ secret.GITHUB_TOKEN }}
+        github-pat: ${{ secrets.GITHUB_TOKEN }}
