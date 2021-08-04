@@ -1,0 +1,33 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: build and push to dockerhub and initiate deploment
+      uses: yokiworks/deploy-github-action@1.0.10
+      with:
+        # The docker container image name
+        image-name: gpu-kf-tf-2.1.0-sudo
+        # The dockerfile used by the docker build command
+        docker-file: tensorflow/gpu-kf-tf-2.1.0-sudo.Dockerfile
+        # Deployment will be invoked on this repo after image push
+        deploy-action-repo: harborzeng/kf-tf
+        # Dockerhub username
+        dockerhub-username: harborzeng
+        # Dockerhub password
+        dockerhub-password: ${{ secret.dockerhub_password }}
+        # Github personal access token to be used to call the deploy-action-repo
+        github-pat: ${{ secret.GITHUB_TOKEN }}
